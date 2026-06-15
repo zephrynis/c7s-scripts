@@ -15,7 +15,7 @@ corepack enable
 corepack prepare pnpm@latest --activate
 
 # --- Rust ------------------------------------------------------------------
-yes "" | curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 # Put cargo/rustc on PATH for the rest of this script
 \. "$HOME/.cargo/env"
 
