@@ -102,4 +102,13 @@ EOF
 systemctl daemon-reload
 systemctl enable --now calagopus.service
 
+# --- panel-rs command ------------------------------------------------------
+# Wrapper so `panel-rs` works from any directory. It cd's into the panel dir
+# first so the binary finds .env (loaded relative to the working directory).
+cat > /usr/local/bin/panel-rs <<EOF
+#!/usr/bin/env bash
+cd "$PANEL_DIR" && exec "$PANEL_DIR/target/debug/panel-rs" "\$@"
+EOF
+chmod +x /usr/local/bin/panel-rs
+
 echo "Done. Backend on :8000 (systemd: calagopus.service). DB :5432, cache :6379."
