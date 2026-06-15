@@ -74,7 +74,10 @@ done
 ( cd "$PANEL_DIR" && SQLX_OFFLINE=true cargo run -p database-migrator -- migrate )
 
 # --- Build backend ---------------------------------------------------------
-( cd "$PANEL_DIR" && SQLX_OFFLINE=true cargo build )
+# Only panel-rs is needed (the binary systemd runs). A bare `cargo build`
+# compiles every workspace default member (incl. bins/all-in-one and its
+# extra deps), wasting time and spiking RAM.
+( cd "$PANEL_DIR" && SQLX_OFFLINE=true cargo build -p panel-rs )
 
 # --- systemd unit for backend ----------------------------------------------
 cat > /etc/systemd/system/calagopus.service <<EOF
