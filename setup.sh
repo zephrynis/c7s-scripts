@@ -3,6 +3,12 @@ set -euo pipefail
 
 PANEL_DIR=/root/panel
 
+# Cap parallel rustc jobs. The panel workspace is large; full parallelism
+# spikes RAM and OOM-kills the build (and sshd) on small LXCs. Override with
+# JOBS=N if the container has plenty of memory.
+JOBS=${JOBS:-2}
+export CARGO_BUILD_JOBS="$JOBS"
+
 # --- System packages -------------------------------------------------------
 apt update
 apt install -y curl git-all build-essential

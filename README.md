@@ -13,6 +13,10 @@ Quick setup scripts for a Debian LXC [calagopus](https://github.com/calagopus/pa
   ```
   Without this the Docker daemon will not start and `db`/`cache` containers fail.
 - Outbound internet (pulls nvm, rustup, Docker, the panel repo, and images).
+- **RAM:** the Rust backend is a large workspace. Give the container **≥4 GB**
+  (8 GB comfortable). Too little RAM OOM-kills the build mid-compile — which can
+  also drop your SSH session. The script caps parallel build jobs at 2 to keep
+  the peak down; raise it on a beefier box with `JOBS=N bash setup.sh`.
 
 ## Usage
 
@@ -22,6 +26,16 @@ A fresh Debian LXC has neither `git` nor `curl`. Install `curl` first, then fetc
 apt update && apt install -y curl
 curl -fsSL -O https://raw.githubusercontent.com/zephrynis/c7s-scripts/main/setup.sh
 bash setup.sh
+```
+
+The build takes a while. Run it inside `tmux` (or `screen`) so a dropped SSH
+session doesn't abort it partway:
+
+```sh
+apt install -y tmux
+tmux new -s setup
+bash setup.sh
+# detach with Ctrl-b d, reattach later with: tmux attach -t setup
 ```
 
 The script is idempotent-unfriendly — run it once on a clean container. It exits on first error (`set -euo pipefail`).
