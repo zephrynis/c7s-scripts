@@ -88,8 +88,10 @@ Requires=docker.service
 
 [Service]
 Type=simple
+# panel-rs loads .env itself (dotenvy) from WorkingDirectory. Don't use
+# systemd EnvironmentFile= -- it doesn't strip the inline "# ..." comments
+# in .env, so values like APP_PRIMARY arrive as "true # ..." and fail to parse.
 WorkingDirectory=$PANEL_DIR
-EnvironmentFile=$PANEL_DIR/.env
 ExecStart=$PANEL_DIR/target/debug/panel-rs
 Restart=on-failure
 
