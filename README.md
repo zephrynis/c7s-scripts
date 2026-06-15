@@ -16,9 +16,11 @@ Quick setup scripts for a Debian LXC [calagopus](https://github.com/calagopus/pa
 
 ## Usage
 
+A fresh Debian LXC has neither `git` nor `curl`. Install `curl` first, then fetch and run the script (it installs `git` and everything else itself):
+
 ```sh
-git clone https://github.com/zephrynis/c7s-scripts.git
-cd c7s-scripts
+apt update && apt install -y curl
+curl -fsSL -O https://raw.githubusercontent.com/zephrynis/c7s-scripts/main/setup.sh
 bash setup.sh
 ```
 
